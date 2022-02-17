@@ -28,7 +28,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         title = "WishList"
         view.addSubview(table)
         table.dataSource = self
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(didTapAdd))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Share", style: .plain, target: self, action: #selector(share(sender:)))
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -142,6 +143,25 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
             
         }
     }
+    @objc func share(sender:UIView){
+               UIGraphicsBeginImageContext(view.frame.size)
+               view.layer.render(in: UIGraphicsGetCurrentContext()!)
+               let image = UIGraphicsGetImageFromCurrentImageContext()
+               UIGraphicsEndImageContext()
+
+               let textToShare = "Share link"
+
+               if let myWebsite = URL(string: "https://www.amazon.in/GOVO-GOBASS-910-Earphones-Metallic/dp/B09P31MBGH/ref=lp_27365674031_1_2") {
+                   let objectsToShare = [textToShare, myWebsite, image ?? #imageLiteral(resourceName: "app-logo")] as [Any]
+                   let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
+
+                   //Excluded Activities
+                   activityVC.excludedActivityTypes = [UIActivity.ActivityType.airDrop, UIActivity.ActivityType.addToReadingList]
+                   //
+
+                   activityVC.popoverPresentationController?.sourceView = sender
+                   self.present(activityVC, animated: true, completion: nil)
+               }    }
     
 }
     
