@@ -17,8 +17,8 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
-    var urlArray = [String]()
     
+    var urlArray: [String] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         let nib = UINib (nibName: "DemoTableViewCell", bundle: nil)
@@ -92,12 +92,10 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         catch {
             print(error)
         }
-        
+
         return headerTitle
         
-        
     }
-    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return urlArray.count
@@ -125,12 +123,26 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
                 // Create Image and Update Image View
                 cell.myImageView.image = UIImage(data: data)
             }
-        cell.myImageView.backgroundColor = .gray
+        cell.myImageView.backgroundColor = .white
 
         return cell
     }
-
-
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let url = URL(string : urlArray[indexPath.row]) else {return}
+        UIApplication.shared.open(url ,options: [:], completionHandler: nil)
+    }
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if(editingStyle == .delete)
+        {
+            urlArray.remove(at: indexPath.item)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            
+        }
+    }
+    
 }
     
 
