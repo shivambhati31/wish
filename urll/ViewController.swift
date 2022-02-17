@@ -17,7 +17,6 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         table.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         return table
     }()
-    //frgtnhfn
     var urlArray = [String]()
     
     override func viewDidLoad() {
